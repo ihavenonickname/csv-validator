@@ -2,7 +2,7 @@ run_test_case () {
     echo "Test case: $TEST_CASE_NAME"
 
     local ACTUAL_STDERR_OUTPUT
-    ACTUAL_STDERR_OUTPUT=$(echo -n "$FILE_CONTENT" | "./csv-validator" 2>&1)
+    ACTUAL_STDERR_OUTPUT=$(echo -n "$FILE_CONTENT" | "./bin/csv-validator" 2>&1)
     local ACTUAL_EXIT_CODE=$?
 
     if [[ "$EXPECTED_EXIT_CODE" != "$ACTUAL_EXIT_CODE" ]]; then
