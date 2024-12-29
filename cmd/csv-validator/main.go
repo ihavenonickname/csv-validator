@@ -8,15 +8,9 @@ import (
 )
 
 func main() {
-	f, err := os.Open(os.Args[1])
+	log.SetFlags(0)
 
-	if err != nil {
-		log.Fatalf("Error opening the file: %s", err.Error())
-	}
-
-	defer f.Close()
-
-	err = parser.Validate(bufio.NewReader(f))
+	err := parser.Validate(bufio.NewReader(os.Stdin))
 
 	if err != nil {
 		switch err.(type) {
@@ -28,5 +22,5 @@ func main() {
 		}
 	}
 
-	log.Println("ok")
+	log.Println("valid")
 }

@@ -174,7 +174,11 @@ func Validate(reader *bufio.Reader) error {
 	}
 
 	if parser.tokenKind == endOfText {
-		return nil
+		return &ParserValidationError{
+			msg:    fmt.Sprintf("expected at least 1 column"),
+			line:   parser.tokenStartLine,
+			column: parser.tokenStartColumn,
+		}
 	}
 
 	fieldCountFirstLine, err := parser.parseRecord()
