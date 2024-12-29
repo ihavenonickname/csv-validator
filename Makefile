@@ -4,20 +4,17 @@
 all: build
 
 .PHONY: build
-build: clean
+build: clean fmt
 	go build -o ./bin/csv-validator ./cmd/csv-validator/main.go
 
-# Clean build directory
 .PHONY: clean
 clean:
 	rm -rf ./bin
 
-# Format Go code
 .PHONY: fmt
 fmt:
-	go fmt ./...
+	go fmt ./... > /dev/null
 
-# Test the application
 .PHONY: test
 test: build
 	bash ./test.bash
