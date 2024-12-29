@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"csv-validator/internal/parser"
 	"log"
 	"os"
@@ -10,7 +9,7 @@ import (
 func main() {
 	log.SetFlags(0)
 
-	err := parser.Validate(bufio.NewReader(os.Stdin))
+	err := parser.Validate(os.Stdin)
 
 	if err != nil {
 		switch err.(type) {

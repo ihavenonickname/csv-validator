@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"os"
 )
 
 type ParserValidationError struct {
@@ -153,9 +154,9 @@ func (parser *parser) parseRecord() (int, error) {
 	}
 }
 
-func Validate(reader *bufio.Reader) error {
+func Validate(file *os.File) error {
 	parser := &parser{
-		reader: reader,
+		reader: bufio.NewReader(file),
 		char:   asciiStartOfText,
 		line:   1,
 		column: 0,
