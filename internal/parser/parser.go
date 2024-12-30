@@ -82,7 +82,7 @@ func (parser *parser) readNextToken() error {
 			switch parser.char {
 			case asciiEndOfText:
 				return &ParserValidationError{
-					msg:    "unclosed quoted field",
+					msg:    "unclosed double quote",
 					line:   parser.line,
 					column: parser.column,
 				}
@@ -146,7 +146,7 @@ func (parser *parser) parseRecord() (int, error) {
 			return fieldCount, nil
 		case field:
 			return 0, &ParserValidationError{
-				msg:    "expected comma or line break or end of text",
+				msg:    "expected comma, line break, or end of text",
 				line:   parser.tokenStartLine,
 				column: parser.tokenStartColumn,
 			}

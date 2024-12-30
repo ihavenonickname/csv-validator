@@ -16,8 +16,22 @@ run_test_case () {
     echo ""
 }
 
-echo "Running test suite..."
-echo ""
+TEST_CASE_NAME="Valid file"
+EXPECTED_EXIT_CODE=0
+EXPECTED_STDERR_OUTPUT="valid"
+FILE_CONTENT="a,b,c
+\"a\",\"b\",\"c\"
+\"a,a\",\"b,b\",\"c,c\"
+\"a a\",\"b b\",\"c c\"
+\"csv
+validator1\",\"csv
+
+validator2\",\"csv
+
+validator3\"
+"
+
+run_test_case
 
 TEST_CASE_NAME="Empty file is invalid"
 EXPECTED_EXIT_CODE=2
@@ -34,4 +48,17 @@ Jane,Doe"
 
 run_test_case
 
-echo "...Done"
+TEST_CASE_NAME="Unclosed double quote is invalid"
+EXPECTED_EXIT_CODE=2
+EXPECTED_STDERR_OUTPUT="line 2 column 3: unclosed double quote"
+FILE_CONTENT="a,b
+\"x"
+
+run_test_case
+
+TEST_CASE_NAME="Fields separated by space is invalid"
+EXPECTED_EXIT_CODE=2
+EXPECTED_STDERR_OUTPUT="line 1 column 4: expected comma, line break, or end of text"
+FILE_CONTENT="\"x\" \"y\""
+
+run_test_case
