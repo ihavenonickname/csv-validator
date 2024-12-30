@@ -193,12 +193,6 @@ func Validate(file *os.File) error {
 			return nil
 		}
 
-		err = parser.readNextToken()
-
-		if err != nil {
-			return err
-		}
-
 		fieldCount, err := parser.parseRecord()
 
 		if err != nil {

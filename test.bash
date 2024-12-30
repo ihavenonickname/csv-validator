@@ -5,6 +5,8 @@ run_test_case () {
     ACTUAL_STDERR_OUTPUT=$(echo -n "$FILE_CONTENT" | "./bin/csv-validator" 2>&1)
     local ACTUAL_EXIT_CODE=$?
 
+    echo "$ACTUAL_STDERR_OUTPUT"
+
     if [[ "$EXPECTED_EXIT_CODE" != "$ACTUAL_EXIT_CODE" ]]; then
         echo "Failed: Expected exit code to be '$EXPECTED_EXIT_CODE', got '$ACTUAL_EXIT_CODE'"
     elif [[ "$EXPECTED_STDERR_OUTPUT" != "$ACTUAL_STDERR_OUTPUT" ]]; then
@@ -16,13 +18,17 @@ run_test_case () {
     echo ""
 }
 
-TEST_CASE_NAME="Valid file"
+##############################################################################
+
+TEST_CASE_NAME="Complicated but valid file should return success"
 EXPECTED_EXIT_CODE=0
 EXPECTED_STDERR_OUTPUT="valid"
 FILE_CONTENT="a,b,c
 \"a\",\"b\",\"c\"
 \"a,a\",\"b,b\",\"c,c\"
 \"a a\",\"b b\",\"c c\"
+,,
+\"\",\"\",\"\"
 \"csv
 validator1\",\"csv
 
@@ -33,14 +39,18 @@ validator3\"
 
 run_test_case
 
-TEST_CASE_NAME="Empty file is invalid"
+##############################################################################
+
+TEST_CASE_NAME="Empty file should return error"
 EXPECTED_EXIT_CODE=2
 EXPECTED_STDERR_OUTPUT="line 1 column 0: expected at least 1 column"
 FILE_CONTENT=""
 
 run_test_case
 
-TEST_CASE_NAME="Inconsistent number of fields is invalid"
+##############################################################################
+
+TEST_CASE_NAME="Inconsistent number of fields should return error"
 EXPECTED_EXIT_CODE=2
 EXPECTED_STDERR_OUTPUT="line 2 column 9: expected 3 fields, found 2"
 FILE_CONTENT="John,Doe,30
@@ -48,7 +58,9 @@ Jane,Doe"
 
 run_test_case
 
-TEST_CASE_NAME="Unclosed double quote is invalid"
+##############################################################################
+
+TEST_CASE_NAME="Unclosed double quote should return error"
 EXPECTED_EXIT_CODE=2
 EXPECTED_STDERR_OUTPUT="line 2 column 3: unclosed double quote"
 FILE_CONTENT="a,b
@@ -56,9 +68,13 @@ FILE_CONTENT="a,b
 
 run_test_case
 
-TEST_CASE_NAME="Fields separated by space is invalid"
+##############################################################################
+
+TEST_CASE_NAME="Fields separated by space should return error"
 EXPECTED_EXIT_CODE=2
 EXPECTED_STDERR_OUTPUT="line 1 column 4: expected comma, line break, or end of text"
 FILE_CONTENT="\"x\" \"y\""
 
 run_test_case
+
+##############################################################################
